@@ -1,14 +1,15 @@
 from flask import Flask
 from application.blueprints.routes import web
 from application.util import response
-
-
+import json
 
 app = Flask(__name__)
 
 app.register_blueprint(web, url_prefix='/')
 
-
+f = open("/status.json","w")
+f.write(json.dumps({"MainStatus":"Offline", "SecondaryStatus":"Closed"}))
+f.close()
 
 
 @app.errorhandler(404)
