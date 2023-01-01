@@ -5,8 +5,6 @@ By Zaid Taha, Omar Hamadeh, Mohammad Elayyan
 
 <br> 
 <br> 
-<br> 
-<br> 
 
 
 ## Introduction
