@@ -1,7 +1,5 @@
 
 
-setTimeout(connect, 5000);
-
 document.getElementById('Unlock').disabled = true;
 document.getElementById('Lock').disabled = true;
 const url1= "/api/status";
@@ -88,6 +86,9 @@ function changeSTS3() {
   document.getElementById('secondSts').innerHTML = 'locked';
   document.getElementById('secondSts').style.color = 'red';
 }
+
+
+setTimeout(connect, 5000);
 
 
 
