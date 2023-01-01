@@ -1,6 +1,10 @@
+
+
+setTimeout(connect, 5000);
+
 document.getElementById('Unlock').disabled = true;
 document.getElementById('Lock').disabled = true;
-const url1= "/connect";
+const url1= "/api/status";
 const url2= "/unlock";
 const url3= "/lock";
 function unlock() {
@@ -63,7 +67,7 @@ function connect() {
 
 
 function changeSTS() {
-  document.getElementById('mainSts').innerHTML = 'Connected ✔';
+  document.getElementById('mainSts').innerHTML = 'Online ✔';
   document.getElementById('secondSts').innerHTML = 'Updated';
   document.getElementById('secondSts').style.color = 'green';
     if (document.getElementById('mainSts').innerHTML == 'Connected ✔') {
