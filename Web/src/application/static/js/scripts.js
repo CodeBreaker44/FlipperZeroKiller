@@ -68,7 +68,7 @@ function changeSTS() {
   document.getElementById('mainSts').innerHTML = 'Online ✔';
   document.getElementById('secondSts').innerHTML = 'Updated';
   document.getElementById('secondSts').style.color = 'green';
-    if (document.getElementById('mainSts').innerHTML == 'Connected ✔') {
+    if (document.getElementById('mainSts').innerHTML == 'Online ✔') {
       document.getElementById('Unlock').disabled = false;
       document.getElementById('Lock').disabled = false;
     }
