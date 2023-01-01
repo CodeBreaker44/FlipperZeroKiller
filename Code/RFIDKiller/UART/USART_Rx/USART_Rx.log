@@ -1,0 +1,12 @@
+0	1	mikroCPIC1618.exe -MSF -DBG -pP16F877A -DL -O11111114 -fo8 -N"C:\Users\SilverCryptor\Desktop\USART_Rx\USART_Rx.mcppi" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -SP"C:\Users\SilverCryptor\Desktop\USART_Rx\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" "USART_Rx.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl"	 
+hint: 0	1139	Available RAM: 352 [bytes], Available ROM: 8192 [bytes]	 
+diagnostics: 0	122	Compilation Started	rfid_killer_lcd.h
+warning: 71	1503	Result is not defined in function: 'main'	USART_Rx.c
+diagnostics: 71	123	Compiled Successfully	USART_Rx.c
+diagnostics: 0	127	All files Compiled in 47 ms	 
+hint: 0	1144	Used RAM (bytes): 30 (9%)  Free RAM (bytes): 322 (91%)	Used RAM (bytes): 30 (9%)  Free RAM (bytes): 322 (91%)
+hint: 0	1144	Used ROM (program words): 700 (9%)  Free ROM (program words): 7492 (91%)	Used ROM (program words): 700 (9%)  Free ROM (program words): 7492 (91%)
+diagnostics: 0	125	Project Linked Successfully	USART_Rx.mcppi
+diagnostics: 0	128	Linked in 0 ms	 
+diagnostics: 0	129	Project 'USART_Rx.mcppi' completed: 204 ms	 
+diagnostics: 0	103	Finished successfully: 30 Dec 2022, 01:38:53	USART_Rx.mcppi

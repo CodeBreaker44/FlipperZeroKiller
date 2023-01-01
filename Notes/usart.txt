@@ -1,0 +1,17 @@
+PIC16F877A Serial Communication Tutorial
+PIC16F877A comes with inbuilt USART which can be used for Synchronous/Asynchronous communication. USART is a two-wire communication system in which the data flow serially. USART is also a full-duplex communication, which means you can send and receive data at the same time which can be used to communicate with peripheral devices, such as CRT terminals and personal computers.
+
+The USART can be configured in the following modes:
+
+Asynchronous (full-duplex)
+Synchronous – Master (half-duplex)
+Synchronous – Slave (half-duplex)
+
+
+
+Registers used for Serial Communication
+TXSTA (Transmit Status And Control Register)
+RCSTA (Receive Status And Control Register)
+SPBRG (USART Baud Rate Generator)
+TXREG (USART Transmit Register)
+RCREG (USART Receiver Register)

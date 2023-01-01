@@ -1,0 +1,12 @@
+0	1	mikroCPIC1618.exe -MSF -DBG -pP16F877A -DL -O11111114 -fo8 -N"C:\Users\SilverCryptor\Desktop\USART_Tx\USART_Tx.mcppi" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -SP"C:\Users\SilverCryptor\Desktop\USART_Tx\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" "USART_Tx.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl"	 
+hint: 0	1139	Available RAM: 352 [bytes], Available ROM: 8192 [bytes]	 
+diagnostics: 0	122	Compilation Started	USART_Tx.c
+warning: 50	1503	Result is not defined in function: 'main'	USART_Tx.c
+diagnostics: 50	123	Compiled Successfully	USART_Tx.c
+diagnostics: 0	127	All files Compiled in 31 ms	 
+hint: 0	1144	Used RAM (bytes): 23 (7%)  Free RAM (bytes): 329 (93%)	Used RAM (bytes): 23 (7%)  Free RAM (bytes): 329 (93%)
+hint: 0	1144	Used ROM (program words): 537 (7%)  Free ROM (program words): 7655 (93%)	Used ROM (program words): 537 (7%)  Free ROM (program words): 7655 (93%)
+diagnostics: 0	125	Project Linked Successfully	USART_Tx.mcppi
+diagnostics: 0	128	Linked in 16 ms	 
+diagnostics: 0	129	Project 'USART_Tx.mcppi' completed: 203 ms	 
+diagnostics: 0	103	Finished successfully: 30 Dec 2022, 10:40:31	USART_Tx.mcppi
