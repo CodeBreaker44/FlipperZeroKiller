@@ -8,8 +8,8 @@ scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 def update_door():
-    f = open("/status.txt","w")
-    f.write("Offline")
+    f = open("/status.json","w")
+    f.write(json.dumps({"MainStatus":"Offline"}))
     f.close()
     scheduler.remove_job("69420")
 
@@ -37,8 +37,9 @@ def lock():
 
 @web.route('/api/connect', methods = ['POST'])
 def connect():
-    f = open("/status.txt","w")
-    f.write("Online")
+    data = request.get_json()
+    f = open("/status.json","w")
+    f.write(json.dumps(door_status))
     f.close()
 
     if scheduler.get_job("69420"):
@@ -53,7 +54,7 @@ def connect():
 
 @web.route('/api/status', methods = ['GET'])
 def status():
-    f = open("/status.txt","r")
-    door_status = f.read()
+    f = open("/status.json","r")
+    door_status = json.load(f)
     f.close()
-    return response(door_status)
+    return door_status
