@@ -1,6 +1,0 @@
-[PROJECTS]
-Count=2
-Project0=..\USART_Rx\USART_Rx.mcppi
-Project1=USART_Tx.mcppi
-[ActiveProject]
-Index=1
