@@ -9,9 +9,11 @@ scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 def update_door():
-    f = open("/status.json","w")
-    f.write(json.dumps({"MainStatus":"Offline"}))
+    f = open("/status.json","rw")
+    door_status = json.load(f)
     f.close()
+    door_status["MainStatus"] = "Offline"
+    f.write(json.dumps(door_status))
     scheduler.remove_job("69420")
 
 
