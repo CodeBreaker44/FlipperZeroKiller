@@ -88,7 +88,7 @@ function changeSTS3() {
 }
 
 
-setTimeout(connect, 5000);
+setInterval(connect, 5000);
 
 
 
