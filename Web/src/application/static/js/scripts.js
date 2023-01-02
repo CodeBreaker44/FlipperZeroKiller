@@ -4,7 +4,7 @@ document.getElementById('Unlock').disabled = true;
 document.getElementById('Lock').disabled = true;
 const url1= "/api/status";
 const url2= "/unlock";
-const url3= "/lock";
+const url3= "/lock"; 
 function unlock() {
     fetch(url2, {
         method: 'POST',
