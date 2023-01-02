@@ -42,7 +42,7 @@ function lock() {
 
 function connect() {
     fetch(url1, {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
