@@ -9,11 +9,13 @@ scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 def update_door():
-    f = open("/status.json","rw")
+    f = open("/status.json","r+")
     door_status = json.load(f)
     f.close()
     door_status["MainStatus"] = "Offline"
+    f = open("/status.json","w")
     f.write(json.dumps(door_status))
+    f.close()
     scheduler.remove_job("69420")
 
 
@@ -30,9 +32,11 @@ def index():
 
 @web.route('/unlock',methods = ['POST'])
 def unlock():
-    f = open("/status.json","rw")
+    f = open("/status.json","r+")
     door_status = json.load(f)
+    f.close()
     door_status["Command"] = "unlock"
+    f = open("/status.json","w")
     f.write(json.dumps(door_status))
     f.close()
     return response('Unlocked')
@@ -40,9 +44,11 @@ def unlock():
 
 @web.route('/lock',methods = ['POST'])
 def lock():
-    f = open("/status.json","rw")
+    f = open("/status.json","r+")
     door_status = json.load(f)
+    f.close()
     door_status["Command"] = "lock"
+    f = open("/status.json","w")
     f.write(json.dumps(door_status))
     f.close()
     return response('Locked')
@@ -51,13 +57,14 @@ def lock():
 @web.route('/api/connect', methods = ['POST'])
 def connect():
     data = request.get_json()
-    
-    f = open("/status.json","rw")
+    f = open("/status.json","r+")
     door_status = json.load(f)
+    f.close()
     door_status["MainStatus"] = "Online"
     door_status["SecondaryStatus"] = data["status"]
     command = door_status["Command"]
     door_status["Command"] = ""
+    f = open("/status.json","w")   
     f.write(json.dumps(door_status))
     f.close()
 
@@ -77,5 +84,5 @@ def status():
     f.close()
     if "Command" in door_status:
         del door_status["Command"]
-    
+
     return door_status
