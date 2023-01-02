@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.register_blueprint(web, url_prefix='/')
 
 f = open("/status.json","w")
-f.write(json.dumps({"MainStatus":"Offline", "SecondaryStatus":"Closed"}))
+f.write(json.dumps({"MainStatus":"Offline", "SecondaryStatus":"Locked","Command":""}))
 f.close()
 
 
