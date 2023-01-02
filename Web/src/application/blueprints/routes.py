@@ -75,5 +75,7 @@ def status():
     f = open("/status.json","r")
     door_status = json.load(f)
     f.close()
-    del door_status["Command"]
+    if "Command" in door_status:
+        del door_status["Command"]
+    
     return door_status
