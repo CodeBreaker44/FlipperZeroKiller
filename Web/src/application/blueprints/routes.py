@@ -30,18 +30,34 @@ def index():
 
 @web.route('/unlock',methods = ['POST'])
 def unlock():
+    f = open("/status.json","rw")
+    door_status = json.load(f)
+    door_status["Command"] = "unlock"
+    f.write(json.dumps(door_status))
+    f.close()
     return response('Unlocked')
 
 
 @web.route('/lock',methods = ['POST'])
 def lock():
+    f = open("/status.json","rw")
+    door_status = json.load(f)
+    door_status["Command"] = "lock"
+    f.write(json.dumps(door_status))
+    f.close()
     return response('Locked')
 
 
 @web.route('/api/connect', methods = ['POST'])
 def connect():
     data = request.get_json()
-    f = open("/status.json","w")
+    
+    f = open("/status.json","rw")
+    door_status = json.load(f)
+    door_status["MainStatus"] = "Online"
+    door_status["SecondaryStatus"] = data["status"]
+    command = door_status["Command"]
+    door_status["Command"] = ""
     f.write(json.dumps(door_status))
     f.close()
 
@@ -51,8 +67,7 @@ def connect():
     else:  
         scheduler.add_job(id="69420", func=update_door, trigger="interval", seconds=10)
     
-
-    return response("Status Updated")
+    return {"Command":command}
 
 
 @web.route('/api/status', methods = ['GET'])
@@ -60,4 +75,5 @@ def status():
     f = open("/status.json","r")
     door_status = json.load(f)
     f.close()
+    del door_status["Command"]
     return door_status
