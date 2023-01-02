@@ -11,7 +11,6 @@ function unlock() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
     })
     .then(response => response.json())
     .then(data => {
@@ -29,7 +28,6 @@ function lock() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
     })
     .then(response => response.json())
     .then(data => {
@@ -48,7 +46,6 @@ function connect() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
     })
     .then(response => response.json())
     .then(data => {
