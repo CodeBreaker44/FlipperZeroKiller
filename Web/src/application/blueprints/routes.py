@@ -70,9 +70,9 @@ def connect():
 
     if scheduler.get_job("69420"):
         scheduler.remove_job("69420")
-        scheduler.add_job(id="69420", func=update_door, trigger="interval", seconds=10)
+        scheduler.add_job(id="69420", func=update_door, trigger="interval", seconds=3)
     else:  
-        scheduler.add_job(id="69420", func=update_door, trigger="interval", seconds=10)
+        scheduler.add_job(id="69420", func=update_door, trigger="interval", seconds=3)
     
     return {"Command":command}
 
