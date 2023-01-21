@@ -35,7 +35,7 @@ def unlock():
     f = open("/status.json","r+")
     door_status = json.load(f)
     f.close()
-    door_status["Command"] = "unlock"
+    door_status["Command"] = "U"
     f = open("/status.json","w")
     f.write(json.dumps(door_status))
     f.close()
@@ -47,7 +47,7 @@ def lock():
     f = open("/status.json","r+")
     door_status = json.load(f)
     f.close()
-    door_status["Command"] = "lock"
+    door_status["Command"] = "L"
     f = open("/status.json","w")
     f.write(json.dumps(door_status))
     f.close()
