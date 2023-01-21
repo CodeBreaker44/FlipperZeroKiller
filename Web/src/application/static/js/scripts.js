@@ -50,7 +50,22 @@ function connect() {
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        changeSTS();
+        if (data["MainStatus"] == "Online") 
+        {
+            changeSTS();
+        }
+        if (data["MainStatus"] == "Offline") 
+        {
+            changeSTS4();
+        }
+        if (data["SecondaryStatus"] == "Unlocked") 
+        {
+            changeSTS2();
+        }
+        if (data["SecondaryStatus"] == "Locked") 
+        {
+            changeSTS3();
+        }
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -63,26 +78,29 @@ function connect() {
 
 function changeSTS() {
   document.getElementById('mainSts').innerHTML = 'Online ✔';
-  document.getElementById('secondSts').innerHTML = 'Updated';
-  document.getElementById('secondSts').style.color = 'green';
     if (document.getElementById('mainSts').innerHTML == 'Online ✔') {
       document.getElementById('Unlock').disabled = false;
       document.getElementById('Lock').disabled = false;
     }
   }
 
-
-
-
 function changeSTS2() {
-  document.getElementById('secondSts').innerHTML = 'unlocked';
+  document.getElementById('secondSts').innerHTML = 'Unlocked';
   document.getElementById('secondSts').style.color = 'blue';
 }
 
 function changeSTS3() {
-  document.getElementById('secondSts').innerHTML = 'locked';
+  document.getElementById('secondSts').innerHTML = 'Locked';
   document.getElementById('secondSts').style.color = 'red';
 }
+
+function changeSTS4() {
+  document.getElementById('mainSts').innerHTML = 'Offline ❌';
+    if (document.getElementById('mainSts').innerHTML == 'Offline ❌') {
+      document.getElementById('Unlock').disabled = true;
+      document.getElementById('Lock').disabled = true;
+    }
+  }
 
 
 setInterval(connect, 5000);
