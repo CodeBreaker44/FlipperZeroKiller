@@ -15,7 +15,7 @@ function unlock() {
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        changeSTS2();
+        // changeSTS2();
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -32,7 +32,7 @@ function lock() {
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        changeSTS3();
+        // changeSTS3();
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -103,7 +103,7 @@ function changeSTS4() {
   }
 
 
-setInterval(connect, 5000);
+setInterval(connect, 2000);
 
 
 
