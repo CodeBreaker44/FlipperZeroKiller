@@ -15,6 +15,9 @@ Typical “smart” doors these days depend on Magnetic Stripe Cards, RFID Card,
 <img align="middle" src="https://github.com/CodeBreaker44/FlipperZeroKiller/blob/main/Diagrams/Screenshot_2023-01-19_141517.png">
 
 ## Web Portal
+<img align="right" src="https://github.com/CodeBreaker44/FlipperZeroKiller/blob/main/Diagrams/frame.png" width="300">
+
+
 - To deploy the web server (docker container) 
 ```console
 foo@bar:~$ cd web/
