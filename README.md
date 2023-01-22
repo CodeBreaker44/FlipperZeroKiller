@@ -15,15 +15,16 @@ Typical “smart” doors these days depend on Magnetic Stripe Cards, RFID Card,
 <img align="middle" src="https://github.com/CodeBreaker44/FlipperZeroKiller/blob/main/Diagrams/Screenshot_2023-01-19_141517.png">
 
 ## Web Portal
-<br>
-<img align="middle" src="https://github.com/CodeBreaker44/FlipperZeroKiller/blob/main/Diagrams/Screenshot 2023-01-22 190417.png">
-<br>
-
 - To deploy the web server (docker container) 
 ```console
 foo@bar:~$ cd web/
 foo@bar:~$ sudo bash build-docker.sh    # use sudo if not in docker group
 ```
+<br>
+<img align="middle" src="https://github.com/CodeBreaker44/FlipperZeroKiller/blob/main/Diagrams/Screenshot 2023-01-22 190417.png">
+<br>
+
+
 
 
 
