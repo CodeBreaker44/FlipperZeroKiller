@@ -1,0 +1,12 @@
+0	1	mikroCPIC1618.exe -MSF -DBG -pP16F877A -DL -O11111114 -fo8 -N"C:\Users\ztaha\Desktop\University\First semester 2022-2023\Embedded systems\Final Project\FlipperZeroKiller\Code\FinalCodeKey.mcppi" -SP"D:\MikroC\mikroC PRO for PIC\Defs\" -SP"D:\MikroC\mikroC PRO for PIC\Uses\P16\" -SP"C:\Users\ztaha\Desktop\University\First semester 2022-2023\Embedded systems\Final Project\FlipperZeroKiller\Code\" -IP"D:\MikroC\mikroC PRO for PIC\Uses\P16\" "FinalCodeKey.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl"	 
+hint: 0	1139	Available RAM: 352 [bytes], Available ROM: 8192 [bytes]	 
+diagnostics: 0	122	Compilation Started	nonce.h
+warning: 64	1503	Result is not defined in function: 'UART_RxString'	uart.h
+diagnostics: 38	123	Compiled Successfully	FinalCodeKey.c
+diagnostics: 0	127	All files Compiled in 62 ms	 
+hint: 0	1144	Used RAM (bytes): 44 (12%)  Free RAM (bytes): 308 (88%)	Used RAM (bytes): 44 (12%)  Free RAM (bytes): 308 (88%)
+hint: 0	1144	Used ROM (program words): 704 (9%)  Free ROM (program words): 7488 (91%)	Used ROM (program words): 704 (9%)  Free ROM (program words): 7488 (91%)
+diagnostics: 0	125	Project Linked Successfully	FinalCodeKey.mcppi
+diagnostics: 0	128	Linked in 16 ms	 
+diagnostics: 0	129	Project 'FinalCodeKey.mcppi' completed: 234 ms	 
+diagnostics: 0	103	Finished successfully: 22 Jan 2023, 18:30:51	FinalCodeKey.mcppi
