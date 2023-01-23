@@ -1,4 +1,4 @@
-﻿# FlipperZeroKiller
+﻿# FlipperZeroKiller/RFID Killer
 
 ### Embedded Systems Final Project 2022/2023
 <img align="right" src="https://github.com/CodeBreaker44/FlipperZeroKiller/blob/main/Diagrams/qFlipper_macOS_256px_ugly_1_copy.png" width="200">
