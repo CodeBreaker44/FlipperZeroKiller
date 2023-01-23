@@ -333,6 +333,7 @@ void interrupt (void){
  Lcd_CmdWriteInt(0x01);
  Lcd_CmdWriteInt(0x80);
  Lcd_PrintInt("Door Locked");
+ PORTB = PORTB & 0b11111101;
 
 
 
@@ -402,6 +403,8 @@ void interrupt (void){
  Lcd_CmdWriteInt(0x01);
  Lcd_CmdWriteInt(0x80);
  Lcd_PrintInt("Door Unlocked");
+ PORTB = PORTB | 0b00000010;
+ PIR1 = PIE1 | 0X01;
 
  door_ctr = 0;
  loki = 0;
@@ -414,12 +417,30 @@ void interrupt (void){
 
  PIR1 = PIR1 & 0b11011111;
  }
+ if(INTCON & 0x02)
+ {
+ buzz_toggle = 1;
+ buzz_ctr = 0;
+ position = 1;
+ PORTC = PORTC | 0x10;
+ PORTC = PORTC & 0xF7;
 
+ Lcd_CmdWriteInt(0x02);
+ Lcd_CmdWriteInt(0x28);
+ Lcd_CmdWriteInt(0x0E);
+ Lcd_CmdWriteInt(0x01);
+ Lcd_CmdWriteInt(0x80);
+ Lcd_PrintInt("Unlocked by ESP");
+
+ door_ctr = 0;
+ INTCON = INTCON & 0b11111101;
+
+ }
  }
 
 void main()
 {
- INTCON = 0XC0;
+ INTCON = 0XD0;
 
  T1CON = 0x31;
  TMR1H = 0xFF;
@@ -427,7 +448,7 @@ void main()
 
 
  UART_Init(9600);
- PIR1 = PIE1 | 0X01;
+
  buzz_toggle = 0;
  PORTC = PORTC | 0B00001000;
  PORTC = PORTC & 0B11001111;
@@ -441,7 +462,9 @@ void main()
  Lcd_CmdWrite(0x01);
  Lcd_CmdWrite(0x80);
  Lcd_Print("Door Locked");
-#line 205 "C:/Users/SilverCryptor/Desktop/FlipperZeroKiller/Code/FinalCode.c"
+ TRISB = TRISB & 0b11111101;
+ PORTB = PORTB & 0b11111101;
+#line 228 "C:/Users/SilverCryptor/Desktop/FlipperZeroKiller/Code/FinalCode.c"
  while(1){
  }
 

@@ -24,8 +24,7 @@ Count=0
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-File0=FinalCode.c
-Count=1
+Count=0
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
@@ -46,12 +45,11 @@ File1=C_Type
 File2=C_String
 Count=3
 [EXPANDED_NODES]
-0=MsodaKeySamera.mcppi
-Count=1
+Count=0
 [LIB_EXPANDED_NODES]
 0=mikroE Libraries
 1=System Libraries
-Count=2
+Count=3
 [PROGRAMMER_TYPE]
 Value=mikroE mikroProg
 [CODEGRIP_OPTIONS]

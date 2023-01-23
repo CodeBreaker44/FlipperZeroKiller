@@ -79,6 +79,7 @@ void interrupt (void){
             Lcd_CmdWriteInt(0x01);        // Clear Display
             Lcd_CmdWriteInt(0x80);        // Move the cursor to beginning of first line
             Lcd_PrintInt("Door Locked");
+            PORTB = PORTB & 0b11111101;  // Update status to ESP NodeMCUU
             // asm{sleep};
 
 
@@ -104,7 +105,7 @@ void interrupt (void){
                 Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
                 Lcd_CmdWriteInt(0x01);      // Clear Display
                 Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
-                Lcd_PrintInt("hello");
+                Lcd_PrintInt("Authenticating");
                 delay_ms(50);
 
                 for ( d = 0 ; d<4; d++)
@@ -148,6 +149,8 @@ void interrupt (void){
                     Lcd_CmdWriteInt(0x01);      // Clear Display
                     Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
                     Lcd_PrintInt("Door Unlocked");
+                    PORTB = PORTB | 0b00000010;  // Update status to ESP NodeMCU
+                    PIR1 = PIE1 | 0X01; // Enable TMR1 interrupt
 
                     door_ctr = 0; // Prepare the door to close after X seconds using TMR1
                     loki = 0;
@@ -160,12 +163,31 @@ void interrupt (void){
 
             PIR1 = PIR1 & 0b11011111;   // Clear receiver flag
         }
+      if(INTCON & 0x02)
+        {
+                    buzz_toggle = 1;
+                    buzz_ctr = 0;
+                    position = 1;
+                    PORTC = PORTC | 0x10; // RED OFF, GREEN ON, BUZZER ON
+                    PORTC = PORTC & 0xF7;
 
+                    Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode`
+                    Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
+                    Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
+                    Lcd_CmdWriteInt(0x01);      // Clear Display
+                    Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
+                    Lcd_PrintInt("Unlocked by ESP");
+                    PORTB = PORTB | 0b00000010;  // Update status to ESP NodeMCU
+
+                    door_ctr = 0; // Prepare the door to close after X seconds using TMR1
+                    INTCON = INTCON & 0b11111101;
+
+        }
     }
 
 void main()
 {
-    INTCON  = 0XC0; // Enable global and peripheral interrupts  // 1100 0000
+    INTCON  = 0XD0; // Enable global and peripheral interrupts  // 1100 0000
     // Configure TMR1 register to overflow every 0.1s // 1:8 Prescaler with Fosc = 8.0Mhz
     T1CON = 0x31; // 0011 0001 // 1:8 Prescaler with Fosc = 8.0Mhz // 0x31
     TMR1H = 0xFF;  // 0xFF83 = 0.5ms
@@ -173,7 +195,7 @@ void main()
 
 
     UART_Init(9600); // Initialize UART module
-    PIR1 = PIE1 | 0X01; // Enable TMR1 interrupt
+
     buzz_toggle = 0;
     PORTC = PORTC | 0B00001000; // RED ON, GREEN OFF, BUZZER OFF
     PORTC = PORTC & 0B11001111; // RED ON, GREEN OFF, BUZZER OFF
@@ -187,6 +209,8 @@ void main()
     Lcd_CmdWrite(0x01);        // Clear Display
     Lcd_CmdWrite(0x80);        // Move the cursor to beginning of first line
     Lcd_Print("Door Locked");
+    TRISB = TRISB & 0b11111101;
+    PORTB = PORTB & 0b11111101;  // Update status to ESP NodeMCU
 //    asm{sleep};
     // UART_RxString(20, recievedBuffer); // Receive 20 bytes
     //  Lcd_CmdWrite(0x02);        // Initialize Lcd in 4-bit mode
