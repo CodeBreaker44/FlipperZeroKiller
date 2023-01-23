@@ -1,6 +1,6 @@
-#line 1 "C:/Users/ztaha/Desktop/University/First semester 2022-2023/Embedded systems/Final Project/FlipperZeroKiller/Code/FinalCode.c"
-#line 1 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/rfid_killer_lcd.h"
-#line 16 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/rfid_killer_lcd.h"
+#line 1 "C:/Users/SilverCryptor/Desktop/FlipperZeroKiller/Code/FinalCode.c"
+#line 1 "c:/users/silvercryptor/desktop/flipperzerokiller/code/rfid_killer_lcd.h"
+#line 16 "c:/users/silvercryptor/desktop/flipperzerokiller/code/rfid_killer_lcd.h"
 void delay(unsigned int cnt)
 {
  unsigned int i;
@@ -18,7 +18,7 @@ void delayInt(unsigned int cnt)
  i=i;
  }
 }
-#line 37 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/rfid_killer_lcd.h"
+#line 37 "c:/users/silvercryptor/desktop/flipperzerokiller/code/rfid_killer_lcd.h"
 void Lcd_CmdWrite(char cmd)
 {
   PORTD  = (cmd & 0xF0);
@@ -61,7 +61,7 @@ void Lcd_CmdWriteInt(char cmd)
 
  delayInt(500);
 }
-#line 84 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/rfid_killer_lcd.h"
+#line 84 "c:/users/silvercryptor/desktop/flipperzerokiller/code/rfid_killer_lcd.h"
 void Lcd_DataWrite(char dat)
 {
   PORTD  = (dat & 0xF0);
@@ -127,7 +127,7 @@ void Lcd_PrintInt(char *msg)
  }
 
 }
-#line 1 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/uart.h"
+#line 1 "c:/users/silvercryptor/desktop/flipperzerokiller/code/uart.h"
 
 
 
@@ -158,7 +158,7 @@ char UART_RxChar()
  PIR1 = PIR1 & 0b11011111;
  return(RCREG);
 }
-#line 44 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/uart.h"
+#line 44 "c:/users/silvercryptor/desktop/flipperzerokiller/code/uart.h"
 void UART_TxString(int length,char *msg)
 {
  char i;
@@ -180,7 +180,7 @@ UART_RxString(int length, char *msg){
  }
  INTCON = INTCON | 0b10000000;
 }
-#line 1 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/nonce.h"
+#line 1 "c:/users/silvercryptor/desktop/flipperzerokiller/code/nonce.h"
 void xor_a_b(char *a, char *b)
 {
  unsigned char i;
@@ -200,7 +200,7 @@ void simplehash(char * msg)
  }
 
 }
-#line 1 "d:/mikroc/mikroc pro for pic/include/stdlib.h"
+#line 1 "c:/users/public/documents/mikroelektronika/mikroc pro for pic/include/stdlib.h"
 
 
 
@@ -236,7 +236,7 @@ int min(int a, int b);
 void srand(unsigned x);
 int rand();
 int xtoi(char * s);
-#line 1 "d:/mikroc/mikroc pro for pic/include/string.h"
+#line 1 "c:/users/public/documents/mikroelektronika/mikroc pro for pic/include/string.h"
 
 
 
@@ -261,10 +261,11 @@ char * strpbrk(char * s1, char * s2);
 char * strrchr(char *ptr, char chr);
 char * strstr(char * s1, char * s2);
 char * strtok(char * s1, char * s2);
-#line 11 "C:/Users/ztaha/Desktop/University/First semester 2022-2023/Embedded systems/Final Project/FlipperZeroKiller/Code/FinalCode.c"
+#line 11 "C:/Users/SilverCryptor/Desktop/FlipperZeroKiller/Code/FinalCode.c"
 unsigned int door_ctr = 65535;
 unsigned char servo_ctr = 0;
 unsigned char buzz_toggle = 0;
+unsigned int buzz_ctr = 0;
 unsigned char loki = 0;
 unsigned char recievedBuffer[] = {"00000000000000000000"};
 unsigned char random_chall[] = {"00000123456789abcdef"};
@@ -279,7 +280,7 @@ unsigned char position = 3;
 
 void interrupt (void){
 
-
+ buzz_ctr++;
  if (PIR1 & 0x01)
  {
  servo_ctr++;
@@ -307,10 +308,10 @@ void interrupt (void){
  TMR1H = 0xFF;
  TMR1L = 0x83;
 
- if(buzz_toggle)
+ if(buzz_toggle && buzz_ctr == 250)
  {
  PORTC = PORTC ^ 0x20;
-
+ buzz_ctr = 0;
  }
 
  if (door_ctr == 10000)
@@ -358,7 +359,7 @@ void interrupt (void){
  Lcd_CmdWriteInt(0x01);
  Lcd_CmdWriteInt(0x80);
  Lcd_PrintInt("hello");
-
+ delay_ms(50);
 
  for ( d = 0 ; d<4; d++)
  {
@@ -390,6 +391,7 @@ void interrupt (void){
  if( strncmp(recieved_chall, random_chall, 4) == 0 )
  {
  buzz_toggle = 1;
+ buzz_ctr = 0;
  position = 1;
  PORTC = PORTC | 0x10;
  PORTC = PORTC & 0xF7;
@@ -439,7 +441,7 @@ void main()
  Lcd_CmdWrite(0x01);
  Lcd_CmdWrite(0x80);
  Lcd_Print("Door Locked");
-#line 203 "C:/Users/ztaha/Desktop/University/First semester 2022-2023/Embedded systems/Final Project/FlipperZeroKiller/Code/FinalCode.c"
+#line 205 "C:/Users/SilverCryptor/Desktop/FlipperZeroKiller/Code/FinalCode.c"
  while(1){
  }
 

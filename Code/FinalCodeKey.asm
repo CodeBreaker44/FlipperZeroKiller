@@ -263,18 +263,23 @@ L_end_UART_RxString:
 _main:
 
 ;FinalCodeKey.c,15 :: 		void main (){
-;FinalCodeKey.c,17 :: 		UART_Init(9600);
+;FinalCodeKey.c,17 :: 		TRISB = 0x00;
+	CLRF       TRISB+0
+;FinalCodeKey.c,18 :: 		PORTB = 0xff;
+	MOVLW      255
+	MOVWF      PORTB+0
+;FinalCodeKey.c,19 :: 		UART_Init(9600);
 	MOVLW      128
 	MOVWF      FARG_UART_Init_baudRate+0
 	MOVLW      37
 	MOVWF      FARG_UART_Init_baudRate+1
 	CALL       _UART_Init+0
-;FinalCodeKey.c,18 :: 		delay_ms(5000);
-	MOVLW      51
+;FinalCodeKey.c,20 :: 		delay_ms(2000);
+	MOVLW      21
 	MOVWF      R11+0
-	MOVLW      187
+	MOVLW      75
 	MOVWF      R12+0
-	MOVLW      223
+	MOVLW      190
 	MOVWF      R13+0
 L_main17:
 	DECFSZ     R13+0, 1
@@ -284,8 +289,7 @@ L_main17:
 	DECFSZ     R11+0, 1
 	GOTO       L_main17
 	NOP
-	NOP
-;FinalCodeKey.c,19 :: 		UART_TxString(5,"hello");
+;FinalCodeKey.c,21 :: 		UART_TxString(5,"hello");
 	MOVLW      5
 	MOVWF      FARG_UART_TxString_length+0
 	MOVLW      0
@@ -293,7 +297,7 @@ L_main17:
 	MOVLW      ?lstr1_FinalCodeKey+0
 	MOVWF      FARG_UART_TxString_msg+0
 	CALL       _UART_TxString+0
-;FinalCodeKey.c,20 :: 		UART_RxString(4, recieved_rand);
+;FinalCodeKey.c,22 :: 		UART_RxString(4, recieved_rand);
 	MOVLW      4
 	MOVWF      FARG_UART_RxString_length+0
 	MOVLW      0
@@ -301,18 +305,18 @@ L_main17:
 	MOVLW      _recieved_rand+0
 	MOVWF      FARG_UART_RxString_msg+0
 	CALL       _UART_RxString+0
-;FinalCodeKey.c,22 :: 		simplehash(recieved_rand);
+;FinalCodeKey.c,24 :: 		simplehash(recieved_rand);
 	MOVLW      _recieved_rand+0
 	MOVWF      FARG_simplehash_msg+0
 	CALL       _simplehash+0
-;FinalCodeKey.c,25 :: 		for (i = 0; i < 4; i++)
+;FinalCodeKey.c,27 :: 		for (i = 0; i < 4; i++)
 	CLRF       main_i_L0+0
 L_main18:
 	MOVLW      4
 	SUBWF      main_i_L0+0, 0
 	BTFSC      STATUS+0, 0
 	GOTO       L_main19
-;FinalCodeKey.c,27 :: 		firstFour[i] = recieved_rand[i];
+;FinalCodeKey.c,29 :: 		firstFour[i] = recieved_rand[i];
 	MOVF       main_i_L0+0, 0
 	ADDLW      _firstFour+0
 	MOVWF      R1+0
@@ -325,12 +329,12 @@ L_main18:
 	MOVWF      FSR
 	MOVF       R0+0, 0
 	MOVWF      INDF+0
-;FinalCodeKey.c,25 :: 		for (i = 0; i < 4; i++)
+;FinalCodeKey.c,27 :: 		for (i = 0; i < 4; i++)
 	INCF       main_i_L0+0, 1
-;FinalCodeKey.c,28 :: 		}
+;FinalCodeKey.c,30 :: 		}
 	GOTO       L_main18
 L_main19:
-;FinalCodeKey.c,29 :: 		UART_TxString(4,firstFour);
+;FinalCodeKey.c,31 :: 		UART_TxString(4,firstFour);
 	MOVLW      4
 	MOVWF      FARG_UART_TxString_length+0
 	MOVLW      0
@@ -338,10 +342,10 @@ L_main19:
 	MOVLW      _firstFour+0
 	MOVWF      FARG_UART_TxString_msg+0
 	CALL       _UART_TxString+0
-;FinalCodeKey.c,32 :: 		while(1);
+;FinalCodeKey.c,34 :: 		while(1);
 L_main21:
 	GOTO       L_main21
-;FinalCodeKey.c,38 :: 		}
+;FinalCodeKey.c,40 :: 		}
 L_end_main:
 	GOTO       $+0
 ; end of _main

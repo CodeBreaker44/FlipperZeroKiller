@@ -60,6 +60,7 @@ bf_bit
 boot16_delay_5ms
 brgh
 brgh_bit
+buzz_ctr
 buzz_toggle
 byte2double
 c

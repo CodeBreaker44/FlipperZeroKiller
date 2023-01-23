@@ -9,10 +9,10 @@ L_delay0:
 	MOVF       FARG_delay_cnt+1, 0
 	SUBWF      R1+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__delay49
+	GOTO       L__delay53
 	MOVF       FARG_delay_cnt+0, 0
 	SUBWF      R1+0, 0
-L__delay49:
+L__delay53:
 	BTFSC      STATUS+0, 0
 	GOTO       L_delay1
 ;rfid_killer_lcd.h,21 :: 		i=i;
@@ -38,10 +38,10 @@ L_delayInt3:
 	MOVF       FARG_delayInt_cnt+1, 0
 	SUBWF      R1+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__delayInt51
+	GOTO       L__delayInt55
 	MOVF       FARG_delayInt_cnt+0, 0
 	SUBWF      R1+0, 0
-L__delayInt51:
+L__delayInt55:
 	BTFSC      STATUS+0, 0
 	GOTO       L_delayInt4
 ;rfid_killer_lcd.h,30 :: 		i=i;
@@ -405,17 +405,17 @@ _UART_Init:
 	MOVWF      R4+2
 	MOVWF      R4+3
 	MOVF       R0+0, 0
-L__UART_Init59:
+L__UART_Init63:
 	BTFSC      STATUS+0, 2
-	GOTO       L__UART_Init60
+	GOTO       L__UART_Init64
 	RLF        R4+0, 1
 	RLF        R4+1, 1
 	RLF        R4+2, 1
 	RLF        R4+3, 1
 	BCF        R4+0, 0
 	ADDLW      255
-	GOTO       L__UART_Init59
-L__UART_Init60:
+	GOTO       L__UART_Init63
+L__UART_Init64:
 	MOVLW      0
 	MOVWF      R0+0
 	MOVLW      18
@@ -480,10 +480,10 @@ L_UART_TxString16:
 	XORWF      FARG_UART_TxString_length+1, 0
 	SUBWF      R0+0, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__UART_TxString64
+	GOTO       L__UART_TxString68
 	MOVF       FARG_UART_TxString_length+0, 0
 	SUBWF      UART_TxString_i_L0+0, 0
-L__UART_TxString64:
+L__UART_TxString68:
 	BTFSC      STATUS+0, 0
 	GOTO       L_UART_TxString17
 ;uart.h,49 :: 		UART_TxChar(msg[i]);
@@ -533,10 +533,10 @@ L_UART_RxString20:
 	XORWF      FARG_UART_RxString_length+1, 0
 	SUBWF      R0+0, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__UART_RxString66
+	GOTO       L__UART_RxString70
 	MOVF       FARG_UART_RxString_length+0, 0
 	SUBWF      UART_RxString_i_L0+0, 0
-L__UART_RxString66:
+L__UART_RxString70:
 	BTFSC      STATUS+0, 0
 	GOTO       L_UART_RxString21
 ;uart.h,61 :: 		msg[i] = UART_RxChar();
@@ -643,157 +643,174 @@ _interrupt:
 	MOVWF      ___savePCLATH+0
 	CLRF       PCLATH+0
 
-;FinalCode.c,26 :: 		void interrupt (void){
-;FinalCode.c,29 :: 		if (PIR1 & 0x01) // Check if the interrupt is caused by TMR1
+;FinalCode.c,27 :: 		void interrupt (void){
+;FinalCode.c,29 :: 		buzz_ctr++;
+	INCF       _buzz_ctr+0, 1
+	BTFSC      STATUS+0, 2
+	INCF       _buzz_ctr+1, 1
+;FinalCode.c,30 :: 		if (PIR1 & 0x01) // Check if the interrupt is caused by TMR1
 	BTFSS      PIR1+0, 0
 	GOTO       L_interrupt29
-;FinalCode.c,31 :: 		servo_ctr++;
+;FinalCode.c,32 :: 		servo_ctr++;
 	INCF       _servo_ctr+0, 1
-;FinalCode.c,32 :: 		if ( servo_ctr >= 0)
+;FinalCode.c,33 :: 		if ( servo_ctr >= 0)
 	MOVLW      0
 	SUBWF      _servo_ctr+0, 0
 	BTFSS      STATUS+0, 0
 	GOTO       L_interrupt30
-;FinalCode.c,34 :: 		PORTC  = PORTC | 0x04; // toggle the motor
+;FinalCode.c,35 :: 		PORTC  = PORTC | 0x04; // toggle the motor
 	BSF        PORTC+0, 2
-;FinalCode.c,36 :: 		}
+;FinalCode.c,37 :: 		}
 L_interrupt30:
-;FinalCode.c,37 :: 		if( servo_ctr >= position)
+;FinalCode.c,38 :: 		if( servo_ctr >= position)
 	MOVF       _position+0, 0
 	SUBWF      _servo_ctr+0, 0
 	BTFSS      STATUS+0, 0
 	GOTO       L_interrupt31
-;FinalCode.c,39 :: 		PORTC = PORTC & 0xFB; // toggle the motor
+;FinalCode.c,40 :: 		PORTC = PORTC & 0xFB; // toggle the motor
 	MOVLW      251
 	ANDWF      PORTC+0, 1
-;FinalCode.c,40 :: 		}
+;FinalCode.c,41 :: 		}
 L_interrupt31:
-;FinalCode.c,41 :: 		if( servo_ctr == 40)
+;FinalCode.c,42 :: 		if( servo_ctr == 40)
 	MOVF       _servo_ctr+0, 0
 	XORLW      40
 	BTFSS      STATUS+0, 2
 	GOTO       L_interrupt32
-;FinalCode.c,43 :: 		servo_ctr = 0;
+;FinalCode.c,44 :: 		servo_ctr = 0;
 	CLRF       _servo_ctr+0
-;FinalCode.c,44 :: 		PORTC = PORTC | 0x04; // toggle the motor
+;FinalCode.c,45 :: 		PORTC = PORTC | 0x04; // toggle the motor
 	BSF        PORTC+0, 2
-;FinalCode.c,45 :: 		}
+;FinalCode.c,46 :: 		}
 L_interrupt32:
-;FinalCode.c,48 :: 		}
+;FinalCode.c,49 :: 		}
 L_interrupt29:
-;FinalCode.c,49 :: 		if (door_ctr < 65535)
+;FinalCode.c,50 :: 		if (door_ctr < 65535)
 	MOVLW      255
 	SUBWF      _door_ctr+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__interrupt71
+	GOTO       L__interrupt75
 	MOVLW      255
 	SUBWF      _door_ctr+0, 0
-L__interrupt71:
+L__interrupt75:
 	BTFSC      STATUS+0, 0
 	GOTO       L_interrupt33
-;FinalCode.c,51 :: 		door_ctr++; //Prevent the timer from overflowing and activating at unexpected time!
+;FinalCode.c,52 :: 		door_ctr++; //Prevent the timer from overflowing and activating at unexpected time!
 	INCF       _door_ctr+0, 1
 	BTFSC      STATUS+0, 2
 	INCF       _door_ctr+1, 1
-;FinalCode.c,52 :: 		}
+;FinalCode.c,53 :: 		}
 L_interrupt33:
-;FinalCode.c,53 :: 		TMR1H = 0xFF;
+;FinalCode.c,54 :: 		TMR1H = 0xFF;
 	MOVLW      255
 	MOVWF      TMR1H+0
-;FinalCode.c,54 :: 		TMR1L = 0x83;
+;FinalCode.c,55 :: 		TMR1L = 0x83;
 	MOVLW      131
 	MOVWF      TMR1L+0
-;FinalCode.c,56 :: 		if(buzz_toggle)
+;FinalCode.c,57 :: 		if(buzz_toggle && buzz_ctr == 250)
 	MOVF       _buzz_toggle+0, 0
 	BTFSC      STATUS+0, 2
-	GOTO       L_interrupt34
-;FinalCode.c,58 :: 		PORTC = PORTC ^ 0x20; // keep beeping while door is open
+	GOTO       L_interrupt36
+	MOVLW      0
+	XORWF      _buzz_ctr+1, 0
+	BTFSS      STATUS+0, 2
+	GOTO       L__interrupt76
+	MOVLW      250
+	XORWF      _buzz_ctr+0, 0
+L__interrupt76:
+	BTFSS      STATUS+0, 2
+	GOTO       L_interrupt36
+L__interrupt51:
+;FinalCode.c,59 :: 		PORTC = PORTC ^ 0x20; // keep beeping while door is open
 	MOVLW      32
 	XORWF      PORTC+0, 1
-;FinalCode.c,60 :: 		}
-L_interrupt34:
-;FinalCode.c,62 :: 		if (door_ctr == 10000)
+;FinalCode.c,60 :: 		buzz_ctr = 0;
+	CLRF       _buzz_ctr+0
+	CLRF       _buzz_ctr+1
+;FinalCode.c,61 :: 		}
+L_interrupt36:
+;FinalCode.c,63 :: 		if (door_ctr == 10000)
 	MOVF       _door_ctr+1, 0
 	XORLW      39
 	BTFSS      STATUS+0, 2
-	GOTO       L__interrupt72
+	GOTO       L__interrupt77
 	MOVLW      16
 	XORWF      _door_ctr+0, 0
-L__interrupt72:
+L__interrupt77:
 	BTFSS      STATUS+0, 2
-	GOTO       L_interrupt35
-;FinalCode.c,64 :: 		PORTC = PORTC | 0x04; // RED ON, GREEN OFF, BUZZER OFF
+	GOTO       L_interrupt37
+;FinalCode.c,65 :: 		PORTC = PORTC | 0x04; // RED ON, GREEN OFF, BUZZER OFF
 	BSF        PORTC+0, 2
-;FinalCode.c,65 :: 		PORTC = PORTC & 0b11001111;
+;FinalCode.c,66 :: 		PORTC = PORTC & 0b11001111;
 	MOVLW      207
 	ANDWF      PORTC+0, 1
-;FinalCode.c,66 :: 		}
-L_interrupt35:
-;FinalCode.c,68 :: 		if (door_ctr == 12000)
+;FinalCode.c,67 :: 		}
+L_interrupt37:
+;FinalCode.c,69 :: 		if (door_ctr == 12000)
 	MOVF       _door_ctr+1, 0
 	XORLW      46
 	BTFSS      STATUS+0, 2
-	GOTO       L__interrupt73
+	GOTO       L__interrupt78
 	MOVLW      224
 	XORWF      _door_ctr+0, 0
-L__interrupt73:
+L__interrupt78:
 	BTFSS      STATUS+0, 2
-	GOTO       L_interrupt36
-;FinalCode.c,70 :: 		buzz_toggle = 0;
+	GOTO       L_interrupt38
+;FinalCode.c,71 :: 		buzz_toggle = 0;
 	CLRF       _buzz_toggle+0
-;FinalCode.c,71 :: 		position = 3;
+;FinalCode.c,72 :: 		position = 3;
 	MOVLW      3
 	MOVWF      _position+0
-;FinalCode.c,73 :: 		PORTC = PORTC | 0x08; // RED ON, GREEN OFF, BUZZER OFF
+;FinalCode.c,74 :: 		PORTC = PORTC | 0x08; // RED ON, GREEN OFF, BUZZER OFF
 	BSF        PORTC+0, 3
-;FinalCode.c,74 :: 		PORTC = PORTC & 0xEF;
+;FinalCode.c,75 :: 		PORTC = PORTC & 0xEF;
 	MOVLW      239
 	ANDWF      PORTC+0, 1
-;FinalCode.c,75 :: 		Lcd_CmdWriteInt(0x02);        // Initialize Lcd in 4-bit mode
+;FinalCode.c,76 :: 		Lcd_CmdWriteInt(0x02);        // Initialize Lcd in 4-bit mode
 	MOVLW      2
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,76 :: 		Lcd_CmdWriteInt(0x28);        // enable 5x7 mode for chars
+;FinalCode.c,77 :: 		Lcd_CmdWriteInt(0x28);        // enable 5x7 mode for chars
 	MOVLW      40
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,77 :: 		Lcd_CmdWriteInt(0x0E);        // Display OFF, Cursor ON
+;FinalCode.c,78 :: 		Lcd_CmdWriteInt(0x0E);        // Display OFF, Cursor ON
 	MOVLW      14
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,78 :: 		Lcd_CmdWriteInt(0x01);        // Clear Display
+;FinalCode.c,79 :: 		Lcd_CmdWriteInt(0x01);        // Clear Display
 	MOVLW      1
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,79 :: 		Lcd_CmdWriteInt(0x80);        // Move the cursor to beginning of first line
+;FinalCode.c,80 :: 		Lcd_CmdWriteInt(0x80);        // Move the cursor to beginning of first line
 	MOVLW      128
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,80 :: 		Lcd_PrintInt("Door Locked");
+;FinalCode.c,81 :: 		Lcd_PrintInt("Door Locked");
 	MOVLW      ?lstr1_FinalCode+0
 	MOVWF      FARG_Lcd_PrintInt_msg+0
 	CALL       _Lcd_PrintInt+0
-;FinalCode.c,84 :: 		}
-L_interrupt36:
-;FinalCode.c,87 :: 		PIR1 = PIR1 & 0xFE; // Lower TMR1 INT flag
+;FinalCode.c,85 :: 		}
+L_interrupt38:
+;FinalCode.c,88 :: 		PIR1 = PIR1 & 0xFE; // Lower TMR1 INT flag
 	MOVLW      254
 	ANDWF      PIR1+0, 1
-;FinalCode.c,91 :: 		if (PIR1 & 0x20)  // Check if the interrupt is caused by UART
+;FinalCode.c,92 :: 		if (PIR1 & 0x20)  // Check if the interrupt is caused by UART
 	BTFSS      PIR1+0, 5
-	GOTO       L_interrupt37
-;FinalCode.c,93 :: 		recievedBuffer[loki] =  RCREG;
+	GOTO       L_interrupt39
+;FinalCode.c,94 :: 		recievedBuffer[loki] =  RCREG;
 	MOVF       _loki+0, 0
 	ADDLW      _recievedBuffer+0
 	MOVWF      FSR
 	MOVF       RCREG+0, 0
 	MOVWF      INDF+0
-;FinalCode.c,94 :: 		loki++; // increment the counter
+;FinalCode.c,95 :: 		loki++; // increment the counter
 	INCF       _loki+0, 1
-;FinalCode.c,96 :: 		if(loki == 5 && strncmp(recievedBuffer, "hello",5) == 0)
+;FinalCode.c,97 :: 		if(loki == 5 && strncmp(recievedBuffer, "hello",5) == 0)
 	MOVF       _loki+0, 0
 	XORLW      5
 	BTFSS      STATUS+0, 2
-	GOTO       L_interrupt40
+	GOTO       L_interrupt42
 	MOVLW      _recievedBuffer+0
 	MOVWF      FARG_strncmp_s1+0
 	MOVLW      ?lstr2_FinalCode+0
@@ -804,45 +821,57 @@ L_interrupt36:
 	MOVLW      0
 	XORWF      R0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__interrupt74
+	GOTO       L__interrupt79
 	MOVLW      0
 	XORWF      R0+0, 0
-L__interrupt74:
+L__interrupt79:
 	BTFSS      STATUS+0, 2
-	GOTO       L_interrupt40
-L__interrupt47:
-;FinalCode.c,101 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
+	GOTO       L_interrupt42
+L__interrupt50:
+;FinalCode.c,102 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
 	MOVLW      2
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,102 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
+;FinalCode.c,103 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
 	MOVLW      40
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,103 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
+;FinalCode.c,104 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
 	MOVLW      14
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,104 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
+;FinalCode.c,105 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
 	MOVLW      1
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,105 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
+;FinalCode.c,106 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
 	MOVLW      128
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,106 :: 		Lcd_PrintInt("hello");
+;FinalCode.c,107 :: 		Lcd_PrintInt("hello");
 	MOVLW      ?lstr3_FinalCode+0
 	MOVWF      FARG_Lcd_PrintInt_msg+0
 	CALL       _Lcd_PrintInt+0
-;FinalCode.c,109 :: 		for ( d = 0 ; d<4; d++)
+;FinalCode.c,108 :: 		delay_ms(50);
+	MOVLW      130
+	MOVWF      R12+0
+	MOVLW      221
+	MOVWF      R13+0
+L_interrupt43:
+	DECFSZ     R13+0, 1
+	GOTO       L_interrupt43
+	DECFSZ     R12+0, 1
+	GOTO       L_interrupt43
+	NOP
+	NOP
+;FinalCode.c,110 :: 		for ( d = 0 ; d<4; d++)
 	CLRF       interrupt_d_L2+0
-L_interrupt41:
+L_interrupt44:
 	MOVLW      4
 	SUBWF      interrupt_d_L2+0, 0
 	BTFSC      STATUS+0, 0
-	GOTO       L_interrupt42
-;FinalCode.c,111 :: 		random_chall[d] = rand(); //TODO: generate random challenge rand()
+	GOTO       L_interrupt45
+;FinalCode.c,112 :: 		random_chall[d] = rand(); //TODO: generate random challenge rand()
 	MOVF       interrupt_d_L2+0, 0
 	ADDLW      _random_chall+0
 	MOVWF      FLOC__interrupt+0
@@ -851,12 +880,12 @@ L_interrupt41:
 	MOVWF      FSR
 	MOVF       R0+0, 0
 	MOVWF      INDF+0
-;FinalCode.c,109 :: 		for ( d = 0 ; d<4; d++)
+;FinalCode.c,110 :: 		for ( d = 0 ; d<4; d++)
 	INCF       interrupt_d_L2+0, 1
-;FinalCode.c,112 :: 		}
-	GOTO       L_interrupt41
-L_interrupt42:
-;FinalCode.c,113 :: 		UART_TxString(4,random_chall); // send the random challenge
+;FinalCode.c,113 :: 		}
+	GOTO       L_interrupt44
+L_interrupt45:
+;FinalCode.c,114 :: 		UART_TxString(4,random_chall); // send the random challenge
 	MOVLW      4
 	MOVWF      FARG_UART_TxString_length+0
 	MOVLW      0
@@ -864,31 +893,31 @@ L_interrupt42:
 	MOVLW      _random_chall+0
 	MOVWF      FARG_UART_TxString_msg+0
 	CALL       _UART_TxString+0
-;FinalCode.c,114 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
+;FinalCode.c,115 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
 	MOVLW      2
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,115 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
+;FinalCode.c,116 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
 	MOVLW      40
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,116 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
+;FinalCode.c,117 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
 	MOVLW      14
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,117 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
+;FinalCode.c,118 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
 	MOVLW      1
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,118 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
+;FinalCode.c,119 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
 	MOVLW      128
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,119 :: 		Lcd_PrintInt("Sent");
+;FinalCode.c,120 :: 		Lcd_PrintInt("Sent");
 	MOVLW      ?lstr4_FinalCode+0
 	MOVWF      FARG_Lcd_PrintInt_msg+0
 	CALL       _Lcd_PrintInt+0
-;FinalCode.c,120 :: 		UART_RxString(4, recieved_chall); // recieve the solved challenge
+;FinalCode.c,121 :: 		UART_RxString(4, recieved_chall); // recieve the solved challenge
 	MOVLW      4
 	MOVWF      FARG_UART_RxString_length+0
 	MOVLW      0
@@ -896,59 +925,59 @@ L_interrupt42:
 	MOVLW      _recieved_chall+0
 	MOVWF      FARG_UART_RxString_msg+0
 	CALL       _UART_RxString+0
-;FinalCode.c,121 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
+;FinalCode.c,122 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
 	MOVLW      2
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,122 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
+;FinalCode.c,123 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
 	MOVLW      40
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,123 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
+;FinalCode.c,124 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
 	MOVLW      14
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,124 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
+;FinalCode.c,125 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
 	MOVLW      1
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,125 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
+;FinalCode.c,126 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
 	MOVLW      128
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,126 :: 		Lcd_PrintInt("Recieved");
+;FinalCode.c,127 :: 		Lcd_PrintInt("Recieved");
 	MOVLW      ?lstr5_FinalCode+0
 	MOVWF      FARG_Lcd_PrintInt_msg+0
 	CALL       _Lcd_PrintInt+0
-;FinalCode.c,129 :: 		simplehash(random_chall);  // hash the random challenge with the key
+;FinalCode.c,130 :: 		simplehash(random_chall);  // hash the random challenge with the key
 	MOVLW      _random_chall+0
 	MOVWF      FARG_simplehash_msg+0
 	CALL       _simplehash+0
-;FinalCode.c,130 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
+;FinalCode.c,131 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode
 	MOVLW      2
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,131 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
+;FinalCode.c,132 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
 	MOVLW      40
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,132 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
+;FinalCode.c,133 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
 	MOVLW      14
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,133 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
+;FinalCode.c,134 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
 	MOVLW      1
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,134 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
+;FinalCode.c,135 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
 	MOVLW      128
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,135 :: 		Lcd_PrintInt("Hashed");
+;FinalCode.c,136 :: 		Lcd_PrintInt("Hashed");
 	MOVLW      ?lstr6_FinalCode+0
 	MOVWF      FARG_Lcd_PrintInt_msg+0
 	CALL       _Lcd_PrintInt+0
-;FinalCode.c,136 :: 		if( strncmp(recieved_chall, random_chall, 4) == 0  ) // Compare the recived hash with solved hash
+;FinalCode.c,137 :: 		if( strncmp(recieved_chall, random_chall, 4) == 0  ) // Compare the recived hash with solved hash
 	MOVLW      _recieved_chall+0
 	MOVWF      FARG_strncmp_s1+0
 	MOVLW      _random_chall+0
@@ -959,64 +988,67 @@ L_interrupt42:
 	MOVLW      0
 	XORWF      R0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__interrupt75
+	GOTO       L__interrupt80
 	MOVLW      0
 	XORWF      R0+0, 0
-L__interrupt75:
+L__interrupt80:
 	BTFSS      STATUS+0, 2
-	GOTO       L_interrupt44
-;FinalCode.c,138 :: 		buzz_toggle = 1;
+	GOTO       L_interrupt47
+;FinalCode.c,139 :: 		buzz_toggle = 1;
 	MOVLW      1
 	MOVWF      _buzz_toggle+0
-;FinalCode.c,139 :: 		position = 1;
+;FinalCode.c,140 :: 		buzz_ctr = 0;
+	CLRF       _buzz_ctr+0
+	CLRF       _buzz_ctr+1
+;FinalCode.c,141 :: 		position = 1;
 	MOVLW      1
 	MOVWF      _position+0
-;FinalCode.c,140 :: 		PORTC = PORTC | 0x10; // RED OFF, GREEN ON, BUZZER ON
+;FinalCode.c,142 :: 		PORTC = PORTC | 0x10; // RED OFF, GREEN ON, BUZZER ON
 	BSF        PORTC+0, 4
-;FinalCode.c,141 :: 		PORTC = PORTC & 0xF7;
+;FinalCode.c,143 :: 		PORTC = PORTC & 0xF7;
 	MOVLW      247
 	ANDWF      PORTC+0, 1
-;FinalCode.c,143 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode`
+;FinalCode.c,145 :: 		Lcd_CmdWriteInt(0x02);      // Initialize Lcd in 4-bit mode`
 	MOVLW      2
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,144 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
+;FinalCode.c,146 :: 		Lcd_CmdWriteInt(0x28);      // enable 5x7 mode for chars
 	MOVLW      40
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,145 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
+;FinalCode.c,147 :: 		Lcd_CmdWriteInt(0x0E);      // Display OFF, Cursor ON
 	MOVLW      14
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,146 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
+;FinalCode.c,148 :: 		Lcd_CmdWriteInt(0x01);      // Clear Display
 	MOVLW      1
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,147 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
+;FinalCode.c,149 :: 		Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
 	MOVLW      128
 	MOVWF      FARG_Lcd_CmdWriteInt_cmd+0
 	CALL       _Lcd_CmdWriteInt+0
-;FinalCode.c,148 :: 		Lcd_PrintInt("Door Unlocked");
+;FinalCode.c,150 :: 		Lcd_PrintInt("Door Unlocked");
 	MOVLW      ?lstr7_FinalCode+0
 	MOVWF      FARG_Lcd_PrintInt_msg+0
 	CALL       _Lcd_PrintInt+0
-;FinalCode.c,150 :: 		door_ctr = 0; // Prepare the door to close after X seconds using TMR1
+;FinalCode.c,152 :: 		door_ctr = 0; // Prepare the door to close after X seconds using TMR1
 	CLRF       _door_ctr+0
 	CLRF       _door_ctr+1
-;FinalCode.c,151 :: 		loki = 0;
+;FinalCode.c,153 :: 		loki = 0;
 	CLRF       _loki+0
-;FinalCode.c,152 :: 		}
-L_interrupt44:
-;FinalCode.c,157 :: 		}
-L_interrupt40:
-;FinalCode.c,159 :: 		PIR1 = PIR1 & 0b11011111;   // Clear receiver flag
+;FinalCode.c,154 :: 		}
+L_interrupt47:
+;FinalCode.c,159 :: 		}
+L_interrupt42:
+;FinalCode.c,161 :: 		PIR1 = PIR1 & 0b11011111;   // Clear receiver flag
 	MOVLW      223
 	ANDWF      PIR1+0, 1
-;FinalCode.c,160 :: 		}
-L_interrupt37:
 ;FinalCode.c,162 :: 		}
+L_interrupt39:
+;FinalCode.c,164 :: 		}
 L_end_interrupt:
-L__interrupt70:
+L__interrupt74:
 	MOVF       ___savePCLATH+0, 0
 	MOVWF      PCLATH+0
 	SWAPF      ___saveSTATUS+0, 0
@@ -1028,67 +1060,67 @@ L__interrupt70:
 
 _main:
 
-;FinalCode.c,164 :: 		void main()
-;FinalCode.c,166 :: 		INTCON  = 0XC0; // Enable global and peripheral interrupts  // 1100 0000
+;FinalCode.c,166 :: 		void main()
+;FinalCode.c,168 :: 		INTCON  = 0XC0; // Enable global and peripheral interrupts  // 1100 0000
 	MOVLW      192
 	MOVWF      INTCON+0
-;FinalCode.c,168 :: 		T1CON = 0x31; // 0011 0001 // 1:8 Prescaler with Fosc = 8.0Mhz // 0x31
+;FinalCode.c,170 :: 		T1CON = 0x31; // 0011 0001 // 1:8 Prescaler with Fosc = 8.0Mhz // 0x31
 	MOVLW      49
 	MOVWF      T1CON+0
-;FinalCode.c,169 :: 		TMR1H = 0xFF;  // 0xFF83 = 0.5ms
+;FinalCode.c,171 :: 		TMR1H = 0xFF;  // 0xFF83 = 0.5ms
 	MOVLW      255
 	MOVWF      TMR1H+0
-;FinalCode.c,170 :: 		TMR1L = 0x83;  // 0xFF83 = 0.5ms
+;FinalCode.c,172 :: 		TMR1L = 0x83;  // 0xFF83 = 0.5ms
 	MOVLW      131
 	MOVWF      TMR1L+0
-;FinalCode.c,173 :: 		UART_Init(9600); // Initialize UART module
+;FinalCode.c,175 :: 		UART_Init(9600); // Initialize UART module
 	MOVLW      128
 	MOVWF      FARG_UART_Init_baudRate+0
 	MOVLW      37
 	MOVWF      FARG_UART_Init_baudRate+1
 	CALL       _UART_Init+0
-;FinalCode.c,174 :: 		PIR1 = PIE1 | 0X01; // Enable TMR1 interrupt
+;FinalCode.c,176 :: 		PIR1 = PIE1 | 0X01; // Enable TMR1 interrupt
 	MOVLW      1
 	IORWF      PIE1+0, 0
 	MOVWF      PIR1+0
-;FinalCode.c,175 :: 		buzz_toggle = 0;
+;FinalCode.c,177 :: 		buzz_toggle = 0;
 	CLRF       _buzz_toggle+0
-;FinalCode.c,176 :: 		PORTC = PORTC | 0B00001000; // RED ON, GREEN OFF, BUZZER OFF
+;FinalCode.c,178 :: 		PORTC = PORTC | 0B00001000; // RED ON, GREEN OFF, BUZZER OFF
 	BSF        PORTC+0, 3
-;FinalCode.c,177 :: 		PORTC = PORTC & 0B11001111; // RED ON, GREEN OFF, BUZZER OFF
+;FinalCode.c,179 :: 		PORTC = PORTC & 0B11001111; // RED ON, GREEN OFF, BUZZER OFF
 	MOVLW      207
 	ANDWF      PORTC+0, 1
-;FinalCode.c,181 :: 		LcdDataBusDirnReg = 0x00; // TRISD for LCD
+;FinalCode.c,183 :: 		LcdDataBusDirnReg = 0x00; // TRISD for LCD
 	CLRF       TRISD+0
-;FinalCode.c,182 :: 		Lcd_CmdWrite(0x02);        // Initialize Lcd in 4-bit mode
+;FinalCode.c,184 :: 		Lcd_CmdWrite(0x02);        // Initialize Lcd in 4-bit mode
 	MOVLW      2
 	MOVWF      FARG_Lcd_CmdWrite_cmd+0
 	CALL       _Lcd_CmdWrite+0
-;FinalCode.c,183 :: 		Lcd_CmdWrite(0x28);        // enable 5x7 mode for chars
+;FinalCode.c,185 :: 		Lcd_CmdWrite(0x28);        // enable 5x7 mode for chars
 	MOVLW      40
 	MOVWF      FARG_Lcd_CmdWrite_cmd+0
 	CALL       _Lcd_CmdWrite+0
-;FinalCode.c,184 :: 		Lcd_CmdWrite(0x0E);        // Display OFF, Cursor ON
+;FinalCode.c,186 :: 		Lcd_CmdWrite(0x0E);        // Display OFF, Cursor ON
 	MOVLW      14
 	MOVWF      FARG_Lcd_CmdWrite_cmd+0
 	CALL       _Lcd_CmdWrite+0
-;FinalCode.c,185 :: 		Lcd_CmdWrite(0x01);        // Clear Display
+;FinalCode.c,187 :: 		Lcd_CmdWrite(0x01);        // Clear Display
 	MOVLW      1
 	MOVWF      FARG_Lcd_CmdWrite_cmd+0
 	CALL       _Lcd_CmdWrite+0
-;FinalCode.c,186 :: 		Lcd_CmdWrite(0x80);        // Move the cursor to beginning of first line
+;FinalCode.c,188 :: 		Lcd_CmdWrite(0x80);        // Move the cursor to beginning of first line
 	MOVLW      128
 	MOVWF      FARG_Lcd_CmdWrite_cmd+0
 	CALL       _Lcd_CmdWrite+0
-;FinalCode.c,187 :: 		Lcd_Print("Door Locked");
+;FinalCode.c,189 :: 		Lcd_Print("Door Locked");
 	MOVLW      ?lstr8_FinalCode+0
 	MOVWF      FARG_Lcd_Print_msg+0
 	CALL       _Lcd_Print+0
-;FinalCode.c,203 :: 		while(1){
-L_main45:
-;FinalCode.c,204 :: 		}
-	GOTO       L_main45
+;FinalCode.c,205 :: 		while(1){
+L_main48:
 ;FinalCode.c,206 :: 		}
+	GOTO       L_main48
+;FinalCode.c,208 :: 		}
 L_end_main:
 	GOTO       $+0
 ; end of _main

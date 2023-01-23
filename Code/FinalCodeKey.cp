@@ -1,5 +1,5 @@
-#line 1 "C:/Users/ztaha/Desktop/University/First semester 2022-2023/Embedded systems/Final Project/FlipperZeroKiller/Code/FinalCodeKey.c"
-#line 1 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/nonce.h"
+#line 1 "C:/Users/SilverCryptor/Desktop/FlipperZeroKiller/Code/FinalCodeKey.c"
+#line 1 "c:/users/silvercryptor/desktop/flipperzerokiller/code/nonce.h"
 void xor_a_b(char *a, char *b)
 {
  unsigned char i;
@@ -19,7 +19,7 @@ void simplehash(char * msg)
  }
 
 }
-#line 1 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/uart.h"
+#line 1 "c:/users/silvercryptor/desktop/flipperzerokiller/code/uart.h"
 
 
 
@@ -50,7 +50,7 @@ char UART_RxChar()
  PIR1 = PIR1 & 0b11011111;
  return(RCREG);
 }
-#line 44 "c:/users/ztaha/desktop/university/first semester 2022-2023/embedded systems/final project/flipperzerokiller/code/uart.h"
+#line 44 "c:/users/silvercryptor/desktop/flipperzerokiller/code/uart.h"
 void UART_TxString(int length,char *msg)
 {
  char i;
@@ -72,7 +72,7 @@ UART_RxString(int length, char *msg){
  }
  INTCON = INTCON | 0b10000000;
 }
-#line 9 "C:/Users/ztaha/Desktop/University/First semester 2022-2023/Embedded systems/Final Project/FlipperZeroKiller/Code/FinalCodeKey.c"
+#line 9 "C:/Users/SilverCryptor/Desktop/FlipperZeroKiller/Code/FinalCodeKey.c"
 unsigned char key [] = {"0123456789abcdef"};
 unsigned char recieved_rand [] = {"00000123456789abcdef"};
 unsigned char firstFour [] = {"0000\0"};
@@ -81,8 +81,10 @@ unsigned char firstFour [] = {"0000\0"};
 
 void main (){
  char i;
+ TRISB = 0x00;
+ PORTB = 0xff;
  UART_Init(9600);
- delay_ms(5000);
+ delay_ms(2000);
  UART_TxString(5,"hello");
  UART_RxString(4, recieved_rand);
 

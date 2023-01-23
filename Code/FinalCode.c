@@ -8,9 +8,10 @@
 #define SBIT_CREN     4
 
 // counters for TMR1
-unsigned int door_ctr = 65535; // 0 = closed, 40 = open
-unsigned char servo_ctr = 0; // 0 = closed, 40 = open
+unsigned int door_ctr = 65535; // 0 = closed, 10000 = open
+unsigned char servo_ctr = 0; // 0 = closed, 10000 = open
 unsigned char buzz_toggle = 0; // 0 = off, 1 = on
+unsigned int buzz_ctr = 0; // for beeping purposes
 unsigned char loki  = 0; // counter for the recieved buffer
 unsigned char recievedBuffer[] = {"00000000000000000000"}; // 20 bytes
 unsigned char random_chall[] =   {"00000123456789abcdef"}; // 20 bytes
@@ -25,7 +26,7 @@ unsigned char position = 3;  // 0 = closed, 3 = open
 
 void interrupt (void){
 
-
+    buzz_ctr++;
     if (PIR1 & 0x01) // Check if the interrupt is caused by TMR1
     {
         servo_ctr++;
@@ -53,10 +54,10 @@ void interrupt (void){
         TMR1H = 0xFF;
         TMR1L = 0x83;
 
-        if(buzz_toggle)
+        if(buzz_toggle && buzz_ctr == 250)
         {
             PORTC = PORTC ^ 0x20; // keep beeping while door is open
-
+            buzz_ctr = 0;
         }
         // time to close the door
         if (door_ctr == 10000)
@@ -104,7 +105,7 @@ void interrupt (void){
                 Lcd_CmdWriteInt(0x01);      // Clear Display
                 Lcd_CmdWriteInt(0x80);      // Move the cursor to beginning of first line
                 Lcd_PrintInt("hello");
-
+                delay_ms(50);
 
                 for ( d = 0 ; d<4; d++)
                 {
@@ -136,6 +137,7 @@ void interrupt (void){
                 if( strncmp(recieved_chall, random_chall, 4) == 0  ) // Compare the recived hash with solved hash
                 {
                     buzz_toggle = 1;
+                    buzz_ctr = 0;
                     position = 1;
                     PORTC = PORTC | 0x10; // RED OFF, GREEN ON, BUZZER ON
                     PORTC = PORTC & 0xF7;

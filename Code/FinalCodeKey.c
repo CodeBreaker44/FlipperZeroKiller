@@ -14,8 +14,10 @@ unsigned char firstFour [] = {"0000\0"}; // 4 bytes
 
 void main (){
     char i;
+    TRISB = 0x00;
+    PORTB = 0xff;
     UART_Init(9600);
-    delay_ms(5000);
+    delay_ms(2000);
     UART_TxString(5,"hello");
     UART_RxString(4, recieved_rand);
     
