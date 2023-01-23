@@ -16,14 +16,16 @@ String status = String("Locked");
 
 ICACHE_RAM_ATTR void DetectDoor()
 {
-  Serial.println("Door change detected!");
-  if(D3 == 1)
+  Serial.println("Door Status Changed");
+  if(digitalRead(D2) == 1)
   {
     Serial.println("Door Opened");
+    status = "Unlocked";
   }
-  else
+  else if(digitalRead(D2) == 0)
   {
     Serial.println("Door Closed");
+    status = "Locked";
   }
 }
 
@@ -49,7 +51,7 @@ void setup() {
   // Edit Wifi Creds
   WiFiMulti.addAP("ZainFiber-2.4G-U9c4", "F2n9yTy9");
 
-  attachInterrupt(digitalPinToInterrupt(D3), DetectDoor, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(D2), DetectDoor, CHANGE);
 }
 
 void loop() {
@@ -95,13 +97,11 @@ void loop() {
           // }
           //const char* command = doc["command"];
           
-          Serial.println(command);
           if(command.charAt(12) == 'U')
           {
             status = "Unlocked";
-            digitalWrite(D2,1);
+
             digitalWrite(D1,1);
-            delay(10);
             digitalWrite(D1,0);
           }
           if(command.charAt(12) == 'L')
@@ -109,7 +109,6 @@ void loop() {
             status = "Locked";
             digitalWrite(D2,0);
             digitalWrite(D1,1);
-            delay(10);
             digitalWrite(D1,0);
           }
           Serial.println(status);
